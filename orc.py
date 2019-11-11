@@ -5,7 +5,7 @@ import subprocess
 import threading
 import time
 import jwt
-
+secret ='software-engineering-2019-PESUProductivtyApp'
 
 app = Flask(__name__)
 
@@ -57,9 +57,7 @@ def home(path):
         t2 = threading.Thread(target=faultTolerence)
         t2.start()
         initFlag = 1
-    if not path.startswith(("api/v1/acts","api/v1/categories")):
-        return "",404
-        nor += 1
+    nor = nor + 1
     try:
         temp = request.json
         try:
@@ -70,6 +68,8 @@ def home(path):
         temp = {}
     headers = {"Content-Type": "application/json", "Accept": "application/json"}
     r = ""
+    name = jwt.decode(request.cookie['Authorization'][7:], secret, algorithms=['HS256'])
+    temp["uname"]=name;
     while(True):
         curr_port = (num % (port+1))
         num = num + 1
